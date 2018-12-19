@@ -1,28 +1,20 @@
-import { model, map, objectDive } from "./index.js";
-import { posts } from "./__mockData__/posts.js";
+import { model } from "./model";
+import { objectDive } from "./object-dive";
+import { posts } from "./__mockData__/posts";
 
-describe("Model", () => {
-  let bluePrint;
+describe("objectDive", () => {
+  let blueprint;
 
   beforeEach(() => {
-    bluePrint = {
+    blueprint = {
       user_id: "userId",
-      id: "id"
+      id: "id",
+      nestedId: ["ids", "id"] 
     }
   });
 
   it("should be a valid function", () => {
-    expect(model).not.toBeUndefined();
-  });
-
-  it("Should return a modeled object from json to Model blueprint", () => {
-    const modeled = model(bluePrint, posts[0]);
-    expect(modeled).toEqual({ user_id: 1, id: 1 });
-  });
-
-  it("should accept model an array if json obj is array", () => {
-    const modeledArr = map(bluePrint, posts);
-    expect(modeledArr).toHaveLength(posts.length);
+    expect(objectDive).not.toBeUndefined();
   });
 
   it("should return correct value for nested object mapping", () => {
@@ -37,7 +29,7 @@ describe("Model", () => {
 
   it("should be able to model nested objects", () => {
     const modeled = model(
-      Object.assign(bluePrint, { nestedId: ["ids", "id"] }),
+      blueprint,
       Object.assign(posts[0], { "ids": { "id": 1 }})
     );
     expect(modeled).toEqual({ user_id: 1, id: 1, nestedId: 1 });
