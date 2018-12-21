@@ -8,7 +8,7 @@ describe("Model", () => {
     bluePrint = {
       user_id: "userId",
       id: "id"
-    }
+    };
   });
 
   it("should be a valid function", () => {
