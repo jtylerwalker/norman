@@ -9,7 +9,8 @@
     "lint:style": "node ./node_modules/stylelint/bin/stylelint.js \"**/*.{css,scss}\"",
     "manage-translations": "node ./lokalize/tasks/translation-runner.js",
     "precommit": "lint-staged",
-    "prettier": "prettier \"src/**/*.{js,jsx,ts,tsx,css,less,scss,json,gql,md}\" --write"
+    "prettier": "prettier \"src/**/*.{js,jsx,ts,tsx,css,less,scss,json,gql,md}\" --write",
+    "start": "babel-node --presets es2015 app.js"
   },
   "author": "Tyler Walker",
   "license": "ISC",
@@ -40,7 +41,8 @@
           [
             "es2015",
             {
-              "modules": false
+              "modules": false,
+              "node": true
             }
           ]
         ],
