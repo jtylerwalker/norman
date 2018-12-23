@@ -5,7 +5,7 @@ import { dive } from "./dive";
  * @param {} blueprint
  * @param {*} json
  */
-export const modelObj = (json, blueprint) => {
+const modelObj = (json, blueprint) => {
   return Object.keys(blueprint).reduce((acc, key) => {
     return Object.assign(acc, {
       [key]: Array.isArray(blueprint[key])
@@ -20,7 +20,7 @@ export const modelObj = (json, blueprint) => {
  * @param {} blueprint
  * @param {*} json
  */
-export const modelObjArr = (json, blueprint) =>
+const modelArr = (json, blueprint) =>
   json.reduce((acc, val) => acc.concat(modelObj(val, blueprint)), []);
 
 /**
@@ -30,6 +30,6 @@ export const modelObjArr = (json, blueprint) =>
  */
 export const model = (json, blueprint) => {
   return json.length > 0
-    ? modelObjArr(json, blueprint)
+    ? modelArr(json, blueprint)
     : modelObj(json, blueprint);
 };

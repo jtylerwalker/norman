@@ -1,4 +1,4 @@
-import { model } from "./model.js";
+import { model } from "./model";
 import { posts } from "./__mockData__/posts";
 
 describe("Model", () => {
@@ -15,12 +15,12 @@ describe("Model", () => {
     expect(model).not.toBeUndefined();
   });
 
-  it("should return an object from that matches blueprint", () => {
+  it("should return an object that matches blueprint", () => {
     const modeled = model(posts[0], blueprint);
     expect(modeled).toEqual({ user_id: 1, id: 1 });
   });
 
-  it("should return an array of objects that matches blueprint", () => {
+  it("should return an array of objects that each match blueprint", () => {
     const modeled = model(posts, blueprint);
     expect(modeled[0]).toEqual({ user_id: 1, id: 1 });
   });

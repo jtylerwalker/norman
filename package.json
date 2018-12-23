@@ -4,7 +4,7 @@
   "description": "Library that normalizes json for consumption",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll --notify",
+    "test": "jest --watchAll",
     "lint": "eslint \"./**/*.js\"",
     "lint:style": "node ./node_modules/stylelint/bin/stylelint.js \"**/*.{css,scss}\"",
     "manage-translations": "node ./lokalize/tasks/translation-runner.js",
