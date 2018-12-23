@@ -1,7 +1,7 @@
 import { model } from "./model";
 
 /**
- * returns an object that matches the blueprint object from json
+ * iterates over an array and returns an array of objects modeled to blueprint
  * @param {} blueprint
  * @param {*} json
  */
