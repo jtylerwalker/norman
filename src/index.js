@@ -1,7 +1,13 @@
 import { map } from "./map";
-import { objectDive } from "./object-dive";
+import { dive } from "./dive";
 import { model } from "./model";
 
-const Norman = { map: map, model: model, dive: objectDive };
+const Norman = (() => {
+  return {
+    map: map,
+    model: model,
+    dive: dive
+  };
+})();
 
 export default Norman;

@@ -1,8 +1,8 @@
 import { model } from "./model";
-import { objectDive } from "./object-dive";
+import { dive } from "./dive";
 import { posts } from "./__mockData__/posts";
 
-describe("objectDive", () => {
+describe("dive", () => {
   let blueprint;
 
   beforeEach(() => {
@@ -14,16 +14,16 @@ describe("objectDive", () => {
   });
 
   it("should be a valid function", () => {
-    expect(objectDive).not.toBeUndefined();
+    expect(dive).not.toBeUndefined();
   });
 
   it("should return correct value for nested object mapping", () => {
     const shallowMap = { ids: { id: 1 } };
-    const mapped = objectDive(["ids", "id"], { ids: { id: 1 } }, shallowMap);
+    const mapped = dive(["ids", "id"], { ids: { id: 1 } }, shallowMap);
     expect(mapped).toBe(1);
 
     const deepMap = { ids: { id: { more: { values: "hello" } } } };
-    const deeplyMapped = objectDive(["ids", "id", "more", "values"], deepMap);
+    const deeplyMapped = dive(["ids", "id", "more", "values"], deepMap);
     expect(deeplyMapped).toBe("hello");
   });
 
