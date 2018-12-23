@@ -6,7 +6,7 @@ import { dive } from "./dive";
  * @param {*} json
  */
 export const model = (blueprint, json) => {
-  return Object.keys(blueprint).reduce((acc, key, index) => {
+  return Object.keys(blueprint).reduce((acc, key) => {
     return Object.assign(acc, {
       [key]: Array.isArray(blueprint[key])
         ? dive(blueprint[key], json)
