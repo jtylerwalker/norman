@@ -29,8 +29,8 @@ describe("dive", () => {
 
   it("should be able to model nested objects", () => {
     const modeled = model(
-      blueprint,
-      Object.assign(posts[0], { ids: { id: 1 } })
+      Object.assign(posts[0], { ids: { id: 1 } }),
+      blueprint
     );
     expect(modeled).toEqual({ user_id: 1, id: 1, nestedId: 1 });
   });
