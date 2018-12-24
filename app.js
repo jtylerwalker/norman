@@ -1,6 +1,17 @@
 import Norman from "./src/index";
-import { posts } from "./src/__mockData__/posts";
+import { mock_photos } from "./src/__mockData__/photos";
 
-const bp = { id: "id", data: "userId", title: "title" };
+const PhotosModel = {
+  page: "page",
+  total: "total"
+};
 
-console.log(Norman.map(bp, posts));
+const PhotoModel = {
+  id: "id",
+  farm: "farm"
+};
+
+let photo = Norman.model(mock_photos["photos"]["photo"], PhotoModel);
+let photos = Norman.model(mock_photos["photos"], PhotosModel);
+
+photo = Object.assign(photos, { photo });

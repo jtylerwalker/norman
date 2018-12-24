@@ -28,8 +28,5 @@ const modelArr = (json, blueprint) =>
  * @param {} blueprint
  * @param {*} json
  */
-export const model = (json, blueprint) => {
-  return json.length > 0
-    ? modelArr(json, blueprint)
-    : modelObj(json, blueprint);
-};
+export const model = (json, blueprint) =>
+  json.length > 0 ? modelArr(json, blueprint) : modelObj(json, blueprint);
