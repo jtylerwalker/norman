@@ -12,6 +12,8 @@ const PhotoModel = {
 };
 
 let photo = Norman.model(mock_photos["photos"]["photo"], PhotoModel);
-let photos = Norman.model(mock_photos["photos"], PhotosModel);
+let photos = Norman.model(mock_photos["photos"], PhotosModel, {
+  photos: photo
+});
 
-photo = Object.assign(photos, { photo });
+console.warn(photos);

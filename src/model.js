@@ -28,5 +28,14 @@ const modelArr = (json, blueprint) =>
  * @param {} blueprint
  * @param {*} json
  */
-export const model = (json, blueprint) =>
-  json.length > 0 ? modelArr(json, blueprint) : modelObj(json, blueprint);
+export const model = (json, blueprint, ...children) => {
+  const model =
+    json.length > 0 ? modelArr(json, blueprint) : modelObj(json, blueprint);
+
+  const childObj = children.reduce((acc, child) => {
+    const objProperty = Object.keys(child)[0];
+    return { [objProperty]: child[objProperty] };
+  }, {});
+
+  return Object.assign(model, childObj);
+};

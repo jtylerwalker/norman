@@ -29,4 +29,11 @@ describe("Model", () => {
     const modeledArr = model(posts, blueprint);
     expect(modeledArr).toHaveLength(posts.length);
   });
+
+  it("should accept children objects", () => {
+    const child = [{ id: 1 }];
+    const modeledArr = model(posts, blueprint, { posts: child });
+    expect(modeledArr.posts).toBeDefined();
+    expect(modeledArr.posts[0]).toEqual(child[0]);
+  });
 });
