@@ -1,5 +1,4 @@
 import { dive } from "./dive";
-
 /**
  * iterates over blueprint keys and returns an object matching the blueprint structure
  * @param {} blueprint
@@ -16,7 +15,7 @@ const modelObj = (json, blueprint) => {
 };
 
 /**
- * iterates over an orray of json objects and returns a modeled object for each entry
+ * iterates over an orray of json objects and returns a modeled array of objects for each entry
  * @param {} blueprint
  * @param {*} json
  */

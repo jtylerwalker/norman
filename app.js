@@ -8,12 +8,11 @@ const PhotosModel = {
 
 const PhotoModel = {
   id: "id",
-  farm: "farm"
+  farm: "farm",
+  photos: PhotosModel
 };
 
 let photo = Norman.model(mock_photos["photos"]["photo"], PhotoModel);
-let photos = Norman.model(mock_photos["photos"], PhotosModel, {
-  photos: photo
-});
+let photos = Norman.model(mock_photos["photos"], PhotosModel);
 
 console.warn(photos);
