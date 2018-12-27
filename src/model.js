@@ -21,6 +21,12 @@ export const firstBy = (entries, param, val) =>
 export const lastBy = (entries, param, val) =>
   findBy(entries, param, val)(last);
 
+export const findWhere = (entries, cb) => func => {
+  func(cb(entries));
+};
+
+export const findFirstWhere = (entries, cb) => findWhere(entries, cb)(all);
+
 export const sortBy = (entries, param) => {
   return entries.sort((a, b) => {
     a = isObject(a) ? a[param] : a;
