@@ -1,40 +1,40 @@
 import { normalize, isObject } from "./normalize";
 
-export const Model = (json, blueprint, methods) => {
-  return methods
-    ? Object.assign({}, methods, { all: () => normalize(json, blueprint) })
-    : Object.assign({}, _methods, { all: () => normalize(json, blueprint) });
+export const Model = (json, blueprint, methods) => (f, ...params) => {
+  const entries = normalize(json, blueprint);
+
+  return f(entries, ...params);
 };
 
-const _methods = {
-  all: () => entries,
-  findBy: function(param, val) {
-    return this.all().filter(entry => entry[param] === val);
-  },
-  firstBy: function(param, val) {
-    return this.findBy(param, val)[0];
-  },
-  lastBy: function(param, val) {
-    const returnVal = this.findBy(param, val);
-    return returnVal[returnVal.length - 1];
-  },
-  sortBy: function(by) {
-    const entries = this.all();
+export const all = entries => entries;
 
-    entries.sort((a, b) => {
-      a = isObject(a) ? a[by] : a;
-      b = isObject(b) ? b[by] : b;
+export const first = entries => entries[0];
 
-      if (a < b) {
-        return -1;
-      }
-      if (a > b) {
-        return 1;
-      }
-      return 0;
-    });
+export const last = entries => entries[entries.length - 1];
 
-    return entries;
-  },
-  pop: () => {}
+export const findBy = (entries, param, val) => func =>
+  func(entries.filter(entry => entry[param] === val));
+
+export const firstBy = (entries, param, val) =>
+  findBy(entries, param, val)(first);
+
+export const lastBy = (entries, param, val) =>
+  findBy(entries, param, val)(last);
+
+export const sortBy = (entries, param) => {
+  return entries.sort((a, b) => {
+    a = isObject(a) ? a[param] : a;
+    b = isObject(b) ? b[param] : b;
+
+    if (a < b) {
+      return -1;
+    }
+    if (a > b) {
+      return 1;
+    }
+    return 0;
+  });
 };
+
+export const removeBy = (entries, param, val) =>
+  entries.filter(entry => entry[param] !== val);
