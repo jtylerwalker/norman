@@ -1,19 +1,12 @@
-import { normalize } from "./normalize";
+import { normalize, isObject } from "./normalize";
 
-// export class ModelEntry {
-//   constructor(json, blueprint, methods) {
-//     this.entries = normalize(json, blueprint);
-//   }
-// }
-
-export function model(json, blueprint, methods) {
-  const entries = normalize(json, blueprint);
+export const Model = (json, blueprint, methods) => {
   return methods
-    ? Object.assign(methods, { all: () => entries })
-    : Object.assign(_modelMethods, { all: () => entries });
-}
+    ? Object.assign({}, methods, { all: () => normalize(json, blueprint) })
+    : Object.assign({}, _methods, { all: () => normalize(json, blueprint) });
+};
 
-const _modelMethods = {
+const _methods = {
   all: () => entries,
   findBy: function(param, val) {
     return this.all().filter(entry => entry[param] === val);
@@ -29,10 +22,13 @@ const _modelMethods = {
     const entries = this.all();
 
     entries.sort((a, b) => {
-      if (a[by] < b[by]) {
+      a = isObject(a) ? a[by] : a;
+      b = isObject(b) ? b[by] : b;
+
+      if (a < b) {
         return -1;
       }
-      if (a[by] > b[by]) {
+      if (a > b) {
         return 1;
       }
       return 0;

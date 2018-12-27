@@ -1,3 +1,5 @@
+import { model } from "./model";
+
 const _normalizeObj = (json, blueprint) => {
   return Object.keys(blueprint).reduce((acc, mapping) => {
     const mapFunc = blueprint[mapping][0];
@@ -8,8 +10,6 @@ const _normalizeObj = (json, blueprint) => {
 
 const _normalizeArr = (json, blueprint) =>
   json.reduce((acc, val) => acc.concat(_normalizeObj(val, blueprint)), []);
-
-export const model = (json, blueprint) => {};
 
 export const normalize = (json, blueprint) => {
   return Array.isArray(json)
@@ -25,6 +25,14 @@ export const mapFrom = (blueprint, mapping, json) => {
 };
 
 export const childFrom = (blueprint, mapping) => {
+  const to = mapping;
+  const childJSON = blueprint[mapping][2];
+  const childBP = blueprint[mapping][3];
+
+  return { [to]: normalize(childJSON, childBP) };
+};
+
+export const childModelFrom = (blueprint, mapping) => {
   const to = mapping;
   const childJSON = blueprint[mapping][2];
   const childBP = blueprint[mapping][3];
