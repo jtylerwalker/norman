@@ -1,7 +1,9 @@
 import { model } from "./model";
 import { posts } from "./__mockData__/posts";
+import { mock_photos } from "./__mockData__/photos";
 
 describe("Model", () => {
+  const photos = mock_photos["photos"];
   let blueprint;
 
   beforeEach(() => {
@@ -35,5 +37,25 @@ describe("Model", () => {
     const modeledArr = model(posts, blueprint, { posts: child });
     expect(modeledArr.posts).toBeDefined();
     expect(modeledArr.posts[0]).toEqual(child[0]);
+  });
+
+  it("should accept a nested blueprint", () => {
+    const childBP = {
+      id: "id"
+    };
+    const photosBP = {
+      count: "total",
+      page: "page",
+      child: {
+        photos: childBP,
+        json: photos["photo"]
+      }
+    };
+
+    const modeledPhotos = model(photos, photosBP);
+
+    expect(modeledPhotos.count).toBe(photos["total"]);
+    expect(modeledPhotos.page).toBe(photos["page"]);
+    expect(modeledPhotos.photos[0].id).toBe(photos["photo"][0].id);
   });
 });
