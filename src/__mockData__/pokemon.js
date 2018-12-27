@@ -1,4 +1,4 @@
-const allPokemon = {
+export const allPokemon = {
   "count": 949,
   "next": null,
   "previous": null,

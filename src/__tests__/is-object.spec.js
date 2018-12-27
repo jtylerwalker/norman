@@ -1,4 +1,4 @@
-import { isObject } from "./is-object";
+import { isObject } from "../model";
 
 describe("isObject", () => {
   it("should be a valid function", () => {

@@ -1,6 +1,6 @@
-import { model } from "./model";
-import { posts } from "./__mockData__/posts";
-import { mock_photos } from "./__mockData__/photos";
+import { posts } from "../__mockData__/posts";
+import { mock_photos } from "../__mockData__/photos";
+import { model, mapFrom, childFrom } from "../model";
 
 describe("Model", () => {
   const photos = mock_photos["photos"];
@@ -8,8 +8,8 @@ describe("Model", () => {
 
   beforeEach(() => {
     blueprint = {
-      user_id: "userId",
-      id: "id"
+      user_id: [mapFrom, "userId"],
+      id: [mapFrom, "id"]
     };
   });
 
@@ -32,24 +32,14 @@ describe("Model", () => {
     expect(modeledArr).toHaveLength(posts.length);
   });
 
-  it("should accept children objects", () => {
-    const child = [{ id: 1 }];
-    const modeledArr = model(posts, blueprint, { posts: child });
-    expect(modeledArr.posts).toBeDefined();
-    expect(modeledArr.posts[0]).toEqual(child[0]);
-  });
-
   it("should accept a nested blueprint", () => {
     const childBP = {
-      id: "id"
+      id: [mapFrom, "id"]
     };
     const photosBP = {
-      count: "total",
-      page: "page",
-      child: {
-        photos: childBP,
-        json: photos["photo"]
-      }
+      count: [mapFrom, "total"],
+      page: [mapFrom, "page"],
+      photos: [childFrom, "photo", photos["photo"], childBP]
     };
 
     const modeledPhotos = model(photos, photosBP);

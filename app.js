@@ -1,32 +1,18 @@
-import Norman from "./src/index";
-import { mock_photos } from "./src/__mockData__/photos";
+import * as Norman from "./src/model";
+import { allPokemon } from "./src/__mockData__/pokemon";
 
-let json;
-
-const PhotoModel = {
-  id: "id",
-  farm: "farm"
-};
-
-json = mock_photos["photos"]["photo"];
-
-const PhotosModel = {
-  page: "page",
-  total: "total",
-  child: {
-    photos: PhotoModel,
-    json
-  }
-};
-
-json = mock_photos["photos"];
+let json = allPokemon;
 // Norman.retrieve
+// Norman.mapFrom
 // Norman.child
 // Norman.model
 // Norman.isObject
 // Norman.findWhere
 // Norman.only
 
-let photos = Norman.model(json, PhotosModel);
+const Pokemon = Norman.model(json, {
+  total: [Norman.mapFrom, "count"],
+  pokemon: [Norman.mapFrom, "results"]
+});
 
-console.warn(photos);
+console.warn(Pokemon);

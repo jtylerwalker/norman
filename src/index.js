@@ -1,9 +1,7 @@
-import { dive } from "./dive";
 import { model } from "./model";
 
 const Norman = (() => ({
-  model: model,
-  dive: dive
+  model: model
 }))();
 
 export default Norman;
