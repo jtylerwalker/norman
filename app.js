@@ -6,12 +6,6 @@ let json = allPokemon;
 
 const getNames = json => json.map(pokemon => pokemon["name"]);
 
-const normlizedPokemon = Norman.normalize(json, {
-  total: [Norman.mapFrom, "count"],
-  // pokemon: [Norman.mapFrom, "results"],
-  names: [Norman.formatFrom, getNames, json["results"]]
-});
-
 const Pokemon = Model(json, {
   total: [Norman.mapFrom, "count"],
   pokemon: [Norman.mapFrom, "results"],
