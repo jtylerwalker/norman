@@ -1,6 +1,6 @@
 import { posts } from "../__mockData__/posts";
 import { mock_photos } from "../__mockData__/photos";
-import { model, mapFrom, childFrom } from "../model";
+import { model, mapFrom, childFrom } from "../normalize";
 
 describe("Model", () => {
   const photos = mock_photos["photos"];

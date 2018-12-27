@@ -1,4 +1,4 @@
-import { isObject } from "../model";
+import { isObject } from "../normalize";
 
 describe("isObject", () => {
   it("should be a valid function", () => {
