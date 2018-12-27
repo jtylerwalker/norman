@@ -1,10 +1,7 @@
 import { normalize, isObject } from "./normalize";
 
-export const Model = (json, blueprint, methods) => (f, ...params) => {
-  const entries = normalize(json, blueprint);
-
-  return f(entries, ...params);
-};
+export const Model = (json, blueprint) => (func, ...params) =>
+  func(normalize(json, blueprint), ...params);
 
 export const all = entries => entries;
 
@@ -21,11 +18,10 @@ export const firstBy = (entries, param, val) =>
 export const lastBy = (entries, param, val) =>
   findBy(entries, param, val)(last);
 
-export const findWhere = (entries, cb) => func => {
-  func(cb(entries));
-};
+export const findWhere = (entries, callback) => func => func(callback(entries));
 
-export const findFirstWhere = (entries, cb) => findWhere(entries, cb)(all);
+export const findAllWhere = (entries, callback) =>
+  findWhere(entries, callback)(all);
 
 export const sortBy = (entries, param) => {
   return entries.sort((a, b) => {
