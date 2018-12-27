@@ -25,4 +25,11 @@ const Pokemon = model(json, {
   names: [Norman.formatFrom, getIds, json["results"]]
 });
 
-console.warn(Pokemon.all());
+const AllPokemon = model(json["results"], {
+  name: [Norman.mapFrom, "name"],
+  url: [Norman.mapFrom, "url"]
+});
+
+console.warn(AllPokemon.sortBy("name"));
+// console.warn(AllPokemon.entries.call(this));
+// console.warn(AllPokemon.findBy("name", "Bulbasaur"));
