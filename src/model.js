@@ -1,19 +1,18 @@
 import { dive } from "./dive";
-import { isObject } from "./is-object";
 /**
  * iterates over blueprint keys and returns an object matching the blueprint structure
  * @param {} blueprint
  * @param {*} json
  */
-const modelObj = (json, blueprint) => {
+const _modelObj = (json, blueprint) => {
   return Object.keys(blueprint).reduce((acc, key) => {
-    // if array get nested object
+    // if array get nested property value
     if (Array.isArray(blueprint[key])) {
       return Object.assign(acc, {
         [key]: dive(blueprint[key], json)
       });
     }
-    // if isObject, is blueprint return modeled value
+    // if has key of "child" it is blueprint. It should return modeled value
     else if (key === "child") {
       let keys = Object.keys(blueprint[key]);
       json = blueprint[key][keys[1]];
@@ -23,7 +22,7 @@ const modelObj = (json, blueprint) => {
         [keys[0]]: model(json, blueprint)
       });
     }
-    // return the value
+    // key matches JSON prop, return the value
     else {
       return Object.assign(acc, {
         [key]: json[blueprint[key]]
@@ -37,8 +36,8 @@ const modelObj = (json, blueprint) => {
  * @param {} blueprint
  * @param {*} json
  */
-const modelArr = (json, blueprint) =>
-  json.reduce((acc, val) => acc.concat(modelObj(val, blueprint)), []);
+const _modelArr = (json, blueprint) =>
+  json.reduce((acc, val) => acc.concat(_modelObj(val, blueprint)), []);
 
 /**
  * Models a json obj based on the Model blueprint
@@ -47,7 +46,7 @@ const modelArr = (json, blueprint) =>
  */
 export const model = (json, blueprint, ...children) => {
   const model =
-    json.length > 0 ? modelArr(json, blueprint) : modelObj(json, blueprint);
+    json.length > 0 ? _modelArr(json, blueprint) : _modelObj(json, blueprint);
 
   const childObj = children.reduce((acc, child) => {
     const objProperty = Object.keys(child)[0];
