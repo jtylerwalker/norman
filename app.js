@@ -1,35 +1,18 @@
-import { mapFrom, formatFrom } from "./src/normalize";
-import {
-  Model,
-  all,
-  firstBy,
-  sortBy,
-  removeBy,
-  findAllWhere
-} from "./src/model";
+import * as N from "./src/normalize";
 import { allPokemon } from "./src/__mockData__/pokemon";
+import { ditto as json } from "./src/__mockData__/themarbles";
 
-let json = allPokemon;
+const GameIndices = N.model({}, json["game_indices"]);
 
-const getNames = json => json.map(pokemon => pokemon["name"]);
-
-const Pokemon = Model(json, {
-  total: [mapFrom, "count"],
-  pokemon: [mapFrom, "results"],
-  names: [formatFrom, getNames, json["results"]]
-});
-
-const AllPokemon = Model(json["results"], {
-  name: [mapFrom, "name"],
-  url: [mapFrom, "url"]
-});
-
-let pokemons = AllPokemon(all);
-let zubat = AllPokemon(firstBy, "name", "zubat");
-let sortedPokes = AllPokemon(sortBy, "name");
-let noBulba = AllPokemon(removeBy, "name", "bulbasaur");
-let pokemonWithLetterA = AllPokemon(findAllWhere, entries =>
-  entries.filter(entry => entry.name[0] === "a")
+const Ditto = N.model(
+  {
+    id: "id",
+    experience: "base_experience",
+    height: "height"
+  },
+  json
 );
 
-console.warn(pokemonWithLetterA);
+const ditto = Ditto(N.all);
+
+console.warn(ditto);
