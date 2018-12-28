@@ -14,6 +14,7 @@ describe("aggregate", () => {
 
     modelled = model(blueprint, json)(all);
   });
+
   it("should be a valid function", () => {
     expect(aggregate).toBeDefined();
   });
