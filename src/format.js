@@ -1,6 +1,7 @@
 import { diveToValue } from "./n-map";
 
 /**
+ *
  * partial application function that accepts path on first invocation
  * it will retreive the value of json and return as the first argument of the callback
  *

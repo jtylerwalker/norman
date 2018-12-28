@@ -7,26 +7,6 @@ import { model } from "./model";
  * https://redux.js.org/recipes/structuring-reducers/normalizing-state-shape
  *
  * e.g.
- *
- * {
- *     "id": 42,
- *     "name": "Pikachu",
- *     "stats": [
- *         {
- *           "id": "100",
- *           "strength": 40,
- *         },
- *         {
- *           "id": "101",
- *           "cuteness": 95,
- *         },
- *         {
- *           "id": "102",
- *           "agility": 85,
- *         },
- *     ]
- * }
- * becomes::
  * {
  *     id: 42,
  *     name: "Pikachu",
@@ -51,11 +31,11 @@ import { model } from "./model";
  *
  *
  *
- * @param {} childBlueprint
- * @param {*} childJSON
+ * @param {} blueprint
+ * @param {*} json
  */
-export const modelChild = (childBlueprint, childJSON) => key => {
-  const childModel = model(childBlueprint, childJSON)().reduce(
+export const modelChild = (blueprint, json) => key => {
+  const childModel = model(blueprint, json)().reduce(
     (acc, child, index) => {
       const id = child["id"] || index;
 

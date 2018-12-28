@@ -1,5 +1,7 @@
 /**
+ *
  * Evaluates whether argument is of type "object"
+ *
  * @param {*} x
  */
 export const isObject = x => {
@@ -8,8 +10,10 @@ export const isObject = x => {
 };
 
 /**
+ *
  * Evaluates whether parameter is of type "function"
- * @param {} x
+ *
+ * @param {*} x
  */
 export const isFunction = x => {
   if (!x) return false;

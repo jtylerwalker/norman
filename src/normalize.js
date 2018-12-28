@@ -1,9 +1,11 @@
-import { model } from "./model";
 import { isFunction } from "./helpers";
-import { nMap, diveToValue } from "./n-map";
+import { nMap } from "./n-map";
 
 /**
- * returns a normalized data object
+ *
+ * returns a normalized data object or iterates over an array of objects and
+ * invokes the _normalizeObj function.
+ *
  * @param {*} json
  * @param {*} blueprint
  */
