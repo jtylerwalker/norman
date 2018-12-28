@@ -30,6 +30,10 @@ const _normalizeArr = (json, blueprint) => {
   }, []);
 };
 
+const _diveToValue = (json, ...path) => {
+  return path.reduce((acc, key) => acc[key], json);
+}
+
 export const map = (...path) => (key, json) => {
   return { [key]: path.reduce((acc, pathKey) => acc[pathKey], json) };
 };
@@ -52,7 +56,9 @@ export const format = (...path) => (cb, ...args) => (key, json) => {
   return { [key]: cb(value[key], ...args) };
 };
 
-export const aggregate = (entry, ...path) => (key, json) => ({
-  // helper function for reduce
-  [key]: json[entry].map(item => path.reduce((acc, map) => acc[map], item))
-});
+export const aggregate = (...path) => (...aggregatePath) => (key, json) => {
+  return {
+    [key] : _diveToValue(json, ...path).map(val => 
+    _diveToValue(val, ...aggregatePath))
+  };
+};

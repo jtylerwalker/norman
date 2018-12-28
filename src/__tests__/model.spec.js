@@ -1,4 +1,4 @@
-import { normalize, map, child, format } from "../normalize";
+import { normalize, map, child, format, aggregate } from "../normalize";
 import { model, all } from "../model";
 import { ditto as json } from "../__mockData__/themarbles";
 
@@ -112,6 +112,26 @@ describe("model", () => {
 
     it("should accept multiple arguments", () => {
       expect(modelled.lottaText).toBe(`${json["name"]} how now brown cow`);
+    });
+  });
+
+  describe("aggregate", () => {
+    let modelled;
+
+    beforeEach(() => {
+      blueprint = {
+        name: "name",
+        allStats: aggregate("stats")("stat", "name")
+      };
+
+      modelled = model(blueprint, json)(all);
+    });
+    it("should be a valid function", () => {
+      expect(aggregate).toBeDefined();
+    });
+
+    it("should return an array of values", () => {
+      expect(modelled.allStats).toHaveLength(json["stats"].length);
     });
   });
 });
