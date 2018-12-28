@@ -11,7 +11,7 @@ describe("isFunction", () => {
   });
 
   it("should return true if passed a function declaration", () => {
-    function func() {};
+    function func() {}
     expect(isFunction(func)).toBe(true);
   });
 

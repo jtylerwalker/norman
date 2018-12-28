@@ -1,4 +1,5 @@
-import * as N from "../normalize";
+import { normalize, map, child } from "../normalize";
+import { model, all } from "../model";
 import { ditto as json } from "../__mockData__/themarbles";
 
 describe("model", () => {
@@ -6,39 +7,39 @@ describe("model", () => {
   let childBlueprint;
 
   it("should be a valid function", () => {
-    expect(N.model).not.toBeUndefined();
+    expect(model).not.toBeUndefined();
   });
 
   describe("normalize", () => {
     it("should be a valid function", () => {
-      expect(N.normalize).not.toBeUndefined();
+      expect(normalize).not.toBeUndefined();
     });
 
     it("should return a new object based on blueprint", () => {
       blueprint = Object.assign({}, blueprint, { id: "id" });
-      const normalized = N.model(blueprint, json)(N.all);
+      const normalized = model(blueprint, json)(all);
       expect(normalized).toMatchObject({ id: json["id"] });
     });
 
     it("should accept an array as a json matcher", () => {
       blueprint = Object.assign({}, { name: ["name"] });
-      const normalized = N.model(blueprint, json)(N.all);
+      const normalized = model(blueprint, json)(all);
       expect(normalized).toMatchObject({ name: json["name"] });
     });
   });
 
   describe("map", () => {
     it("should be a valid function", () => {
-      expect(N.map).not.toBeUndefined();
+      expect(map).not.toBeUndefined();
     });
 
     it("should be a curried function", () => {
-      let mapped = N.map()();
+      let mapped = map()();
       expect(mapped).toMatchObject({ undefined: undefined });
     });
 
     it("should accept path to value as multiple args", () => {
-      let mapped = N.map("species", "name")("key", json);
+      let mapped = map("species", "name")("key", json);
       expect(mapped).toMatchObject({ key: json["species"]["name"] });
     });
   });
@@ -52,13 +53,13 @@ describe("model", () => {
       };
 
       blueprint = {
-        stats: N.child(childBlueprint, json["stats"])
+        stats: child(childBlueprint, json["stats"])
       };
 
-      modelWithChild = N.model(blueprint, json)(N.all);
+      modelWithChild = model(blueprint, json)(all);
     });
     it("should be a valid function", () => {
-      expect(N.child).not.toBeUndefined();
+      expect(child).not.toBeUndefined();
     });
 
     it("should assign id if none in blueprint", () => {
