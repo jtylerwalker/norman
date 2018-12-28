@@ -37,11 +37,11 @@ import { model } from "./model";
  *                 strength: 40
  *             },
  *            "101": {
- *                 id: "100",
+ *                 id: "101",
  *                 cuteness: 95,
  *            },
  *            "102": {
- *                 id: "100",
+ *                 id: "102",
  *                 agility: 85,
  *            },
  *        }
