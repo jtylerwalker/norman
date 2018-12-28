@@ -58,32 +58,30 @@ export const lastBy = (entries, param, val) =>
 /**
  * curried function that uses callback to filter entries
  * @param {*} entries
- * @param {*} callback 
+ * @param {*} callback
  */
 export const findWhere = (entries, callback) => func => func(callback(entries));
 
 /**
  * returns all entries from "findWhere" function
  * @param {*} entries
- * @param {*} callback 
+ * @param {*} callback
  */
 export const findAllWhere = (entries, callback) =>
   findWhere(entries, callback)(all);
 
-
 /**
  * returns first entry from "findWhere" function
  * @param {*} entries
- * @param {*} callback 
+ * @param {*} callback
  */
 export const findFirstWhere = (entries, callback) =>
   findWhere(entries, callback)(first);
 
-
 /**
  * returns last entry from "findWhere" function
  * @param {*} entries
- * @param {*} callback 
+ * @param {*} callback
  */
 export const findLastWhere = (entries, callback) =>
   findWhere(entries, callback)(last);
