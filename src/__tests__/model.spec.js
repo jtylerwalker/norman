@@ -1,4 +1,4 @@
-import { normalize, map, child } from "../normalize";
+import { normalize, map, child, format } from "../normalize";
 import { model, all } from "../model";
 import { ditto as json } from "../__mockData__/themarbles";
 
@@ -58,6 +58,7 @@ describe("model", () => {
 
       modelWithChild = model(blueprint, json)(all);
     });
+
     it("should be a valid function", () => {
       expect(child).not.toBeUndefined();
     });
@@ -84,6 +85,33 @@ describe("model", () => {
       let stats = json["stats"];
       expect(modelWithChild.stats.ids).toHaveLength(json["stats"].length);
       expect(modelWithChild.stats.ids).toEqual([stats[0].id, stats[1].id]);
+    });
+  });
+
+  describe("format", () => {
+    let modelled;
+    const upperCaseText = text => text.toUpperCase();
+    const addStrings = (text, ...args) => `${text} ${args.join(" ")}`;
+
+    beforeEach(() => {
+      blueprint = {
+        name: format("name")(upperCaseText),
+        lottaText: format("name")(addStrings, "how", "now", "brown", "cow")
+      };
+
+      modelled = model(blueprint, json)(all);
+    });
+
+    it("should be a valid function", () => {
+      expect(format).not.toBeUndefined();
+    });
+
+    it("should format return value based on callback", () => {
+      expect(modelled.name).toBe(json["name"].toUpperCase());
+    });
+
+    it("should accept multiple arguments", () => {
+      expect(modelled.lottaText).toBe(`${json["name"]} how now brown cow`);
     });
   });
 });

@@ -1,6 +1,11 @@
 import { model } from "./model";
 import { isFunction } from "./helpers";
 
+/**
+ * returns a normalized data object
+ * @param {*} json
+ * @param {*} blueprint
+ */
 export const normalize = (json, blueprint) => {
   return Array.isArray(json)
     ? _normalizeArr(json, blueprint)
@@ -25,11 +30,9 @@ const _normalizeArr = (json, blueprint) => {
   }, []);
 };
 
-export const map = (...mapping) => (key, json) => {
-  return { [key]: mapping.reduce((acc, map) => acc[map], json) };
+export const map = (...path) => (key, json) => {
+  return { [key]: path.reduce((acc, pathKey) => acc[pathKey], json) };
 };
-
-export const format = (cb, ...args) => key => ({ [key]: cb(...args) });
 
 export const child = (childBlueprint, childJSON) => key => {
   const childModel = model(childBlueprint, childJSON)().reduce(
@@ -42,6 +45,11 @@ export const child = (childBlueprint, childJSON) => key => {
     { find: {}, ids: [] }
   );
   return { [key]: childModel };
+};
+
+export const format = (...path) => (cb, ...args) => (key, json) => {
+  const value = map(...path)(key, json);
+  return { [key]: cb(value[key], ...args) };
 };
 
 export const aggregate = (entry, ...path) => (key, json) => ({
