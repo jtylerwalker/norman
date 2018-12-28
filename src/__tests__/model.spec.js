@@ -14,7 +14,7 @@ describe("model", () => {
       expect(N.normalize).not.toBeUndefined();
     });
 
-    it.skip("should return a new object based on blueprint", () => {
+    it("should return a new object based on blueprint", () => {
       blueprint = Object.assign({}, blueprint, { id: "id" });
       const normalized = N.model(blueprint, json)(N.all);
       expect(normalized).toMatchObject({ id: json["id"] });
@@ -68,7 +68,7 @@ describe("model", () => {
     it("should include props in blueprint", () => {
       let stat = json["stats"][0];
       expect(modelWithChild.stats.find["6"].baseStat).toBe(stat["base_stat"]);
-    })
+    });
 
     it("should model a child object and normalize to include a find prop", () => {
       expect(modelWithChild.stats.find).toBeDefined();

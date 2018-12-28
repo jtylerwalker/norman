@@ -1,4 +1,4 @@
-import { isObject } from "../normalize";
+import { isObject } from "../helpers";
 
 describe("isObject", () => {
   it("should be a valid function", () => {
@@ -10,7 +10,7 @@ describe("isObject", () => {
     expect(isObject(ol)).toBe(true);
   });
 
-  it("should return false for an empty object", () => {
+  it("should return true for an empty object", () => {
     expect(isObject({})).toBe(true);
   });
 

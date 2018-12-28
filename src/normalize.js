@@ -1,3 +1,5 @@
+import { isFunction } from "./helpers";
+
 export const normalize = (json, blueprint) => {
   return Array.isArray(json)
     ? _normalizeArr(json, blueprint)
@@ -45,14 +47,6 @@ export const aggregate = (entry, ...path) => (key, json) => ({
   // helper function for reduce
   [key]: json[entry].map(item => path.reduce((acc, map) => acc[map], item))
 });
-
-export const isObject = entity => {
-  if (!entity) return false;
-  return entity && typeof entity === "object" && entity.constructor === Object;
-};
-
-export const isFunction = x =>
-  x && Object.prototype.toString.call(x) == "[object Function]";
 
 export const model = (blueprint, json) => (func, ...params) =>
   func
