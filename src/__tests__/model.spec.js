@@ -9,7 +9,7 @@ describe("model", () => {
     expect(N.model).not.toBeUndefined();
   });
 
-  describe.skip("normalize", () => {
+  describe("normalize", () => {
     it("should be a valid function", () => {
       expect(N.normalize).not.toBeUndefined();
     });
@@ -27,7 +27,7 @@ describe("model", () => {
     });
   });
 
-  describe.skip("map", () => {
+  describe("map", () => {
     it("should be a valid function", () => {
       expect(N.map).not.toBeUndefined();
     });
@@ -44,45 +44,45 @@ describe("model", () => {
   });
 
   describe("child", () => {
+    let modelWithChild;
+
     beforeEach(() => {
       childBlueprint = {
         baseStat: "base_stat"
       };
 
       blueprint = {
-        id: "id",
-        name: "name",
         stats: N.child(childBlueprint, json["stats"])
       };
+
+      modelWithChild = N.model(blueprint, json)(N.all);
     });
     it("should be a valid function", () => {
       expect(N.child).not.toBeUndefined();
     });
 
     it("should assign id if none in blueprint", () => {
-      let modelWithChild = N.model(blueprint, json)(N.all);
       expect(modelWithChild).toMatchObject({});
     });
 
-    it("should model a child object and normalize json accordingly", () => {
-      let modelWithChild = N.model(blueprint, json)(N.all);
-      expect(modelWithChild).toMatchObject({
-        id: json["id"],
-        name: json["name"],
-        stats: {
-          find: {
-            "6": {
-              id: json["stats"][0]["id"],
-              baseStat: json["stats"][0]["base_stat"]
-            },
-            "5": {
-              id: json["stats"][1]["id"],
-              baseStat: json["stats"][1]["base_stat"]
-            }
-          },
-          ids: [6, 5]
-        }
-      });
+    it("should include props in blueprint", () => {
+      let stat = json["stats"][0];
+      expect(modelWithChild.stats.find["6"].baseStat).toBe(stat["base_stat"]);
+    })
+
+    it("should model a child object and normalize to include a find prop", () => {
+      expect(modelWithChild.stats.find).toBeDefined();
+    });
+
+    it("should include the child id as the prop under find", () => {
+      expect(modelWithChild.stats.find["6"]).toBeDefined();
+      expect(modelWithChild.stats.find["5"]).toBeDefined();
+    });
+
+    it("should include an array of all child ids", () => {
+      let stats = json["stats"];
+      expect(modelWithChild.stats.ids).toHaveLength(json["stats"].length);
+      expect(modelWithChild.stats.ids).toEqual([stats[0].id, stats[1].id]);
     });
   });
 });
