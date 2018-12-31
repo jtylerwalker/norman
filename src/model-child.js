@@ -57,8 +57,6 @@ const _setAccValues = (acc, id, child) => {
   return acc;
 };
 
-const _concatenateAggregateValues = (aggregates, acc, json) => {};
-
 const _buildAcc = aggregates => {
   let defaultAcc = { find: {}, ids: [] };
 

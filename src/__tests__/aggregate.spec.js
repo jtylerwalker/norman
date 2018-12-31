@@ -5,16 +5,21 @@ import { ditto as json } from "../__mockData__/themarbles";
 
 describe("aggregate", () => {
   let blueprint;
+  let childBlueprint;
   let modelled;
 
-  // beforeEach(() => {
-  //   blueprint = {
-  //     name: "name",
-  //     allStats: aggregate("stats")("stat", "name")
-  //   };
-
-  //   modelled = model(blueprint, json)(all);
-  // });
+  beforeEach(() => {
+    childBlueprint = {
+      baseStat: "base_stat",
+      effort: "effort"
+    };
+    blueprint = {
+      stats: modelChild(childBlueprint, json["stats"], {
+        statNames: aggregate("stat", "name")
+      })
+    };
+    modelled = model(blueprint, json)(all);
+  });
 
   it("should be a valid function", () => {
     expect(aggregate).toBeDefined();
@@ -25,22 +30,8 @@ describe("aggregate", () => {
   // });
 
   it("should normalize aggregates correctly", () => {
-    let childBlueprint = {
-      baseStat: "base_stat",
-      effort: "effort"
-    };
-    let blueprint = {
-      stats: modelChild(childBlueprint, json["stats"], {
-        statNames: aggregate("stat", "name")
-      })
-    };
-
-    const modelWithChild = model(blueprint, json)(all);
-
-    expect(modelWithChild.stats.statNames).toHaveLength(
-      modelWithChild.stats.ids.length
-    );
-    expect(modelWithChild.stats.statNames).toContain(
+    expect(modelled.stats.statNames).toHaveLength(modelled.stats.ids.length);
+    expect(modelled.stats.statNames).toContain(
       json["stats"][0]["stat"]["name"]
     );
     expect(modelWithChild.stats.statNames).toContain(
