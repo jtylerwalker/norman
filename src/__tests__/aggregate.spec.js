@@ -25,9 +25,9 @@ describe("aggregate", () => {
     expect(aggregate).toBeDefined();
   });
 
-  // it("should return an array of values", () => {
-  //   expect(modelled.allStats).toHaveLength(json["stats"].length);
-  // });
+  it("should return an array of values", () => {
+    expect(modelled.allStats).toHaveLength(json["stats"].length);
+  });
 
   it("should normalize aggregates correctly", () => {
     expect(modelled.stats.statNames).toHaveLength(modelled.stats.ids.length);
