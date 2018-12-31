@@ -1,5 +1,6 @@
 /**
- * path leads to JSON object e.g.
+ *
+ * path leads to JSON object value e.g.
  * {
  *   "hello": {
  *     "world": {
@@ -7,25 +8,22 @@
  *     }
  *   }
  * }
- *
- * to access value of "foo" you would invoke the function with path too "foo"
- *
- * nMap("hello", "world", "foo")
- *
+ * to access value of "foo" you would invoke the function with path to "foo"
+ * e.g. nMap("hello", "world", "foo")
  * returns a key value pair from an array of params
  *
  * @param  {...any} path
  */
 export const nMap = (...path) => (key, json) => ({
-  [key]: diveToValue(json, ...path)
+  [key]: diveToJSONValue(json, ...path)
 });
 
 /**
- * helper function that handles the iteration to the last prop
+ * helper function that handles argument reduction to the last prop in the path
  * returns the value of the prop
  *
  * @param {*} json
  * @param  {...any} path
  */
-export const diveToValue = (json, ...path) =>
+export const diveToJSONValue = (json, ...path) =>
   path.reduce((acc, key) => acc[key], json);

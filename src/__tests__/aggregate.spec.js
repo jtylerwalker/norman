@@ -1,4 +1,5 @@
 import { aggregate } from "../aggregate";
+import { modelChild } from "../model-child";
 import { model, all } from "../model";
 import { ditto as json } from "../__mockData__/themarbles";
 
@@ -23,13 +24,17 @@ describe("aggregate", () => {
     expect(modelled.allStats).toHaveLength(json["stats"].length);
   });
 
-  it.skip("should normalize aggregates correctly", () => {
+  it("should normalize aggregates correctly", () => {
     let childBlueprint = {
       baseStat: "base_stat",
       effort: "effort"
     };
     blueprint = {
-      stats: child(childBlueprint, json["stats"])
+      stats: modelChild(childBlueprint, json["stats"], {
+        statNames: aggregate("stat", "name")
+      })
     };
+
+    const modelWithChild = model(blueprint, json)(all);
   });
 });

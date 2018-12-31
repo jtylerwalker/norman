@@ -1,4 +1,4 @@
-import { diveToValue } from "./n-map";
+import { diveToJSONValue } from "./n-map";
 
 /**
  *
@@ -11,10 +11,10 @@ import { diveToValue } from "./n-map";
  */
 export const aggregate = (...path) => (...aggregatePath) => (key, json) =>
   path.length === 0
-    ? { [key]: diveToValue(json, ...aggregatePath) }
+    ? { [key]: diveToJSONValue(json, ...aggregatePath) }
     : {
-        [key]: diveToValue(json, ...path).map(val =>
-          diveToValue(val, ...aggregatePath)
+        [key]: diveToJSONValue(json, ...path).map(val =>
+          diveToJSONValue(val, ...aggregatePath)
         )
       };
 

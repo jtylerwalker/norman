@@ -1,4 +1,4 @@
-import { diveToValue } from "./n-map";
+import { diveToJSONValue } from "./n-map";
 
 /**
  *
@@ -13,5 +13,5 @@ import { diveToValue } from "./n-map";
  * @param  {...any} path
  */
 export const format = (...path) => (cb, ...args) => (key, json) => ({
-  [key]: cb(diveToValue(json, ...path), ...args)
+  [key]: cb(diveToJSONValue(json, ...path), ...args)
 });

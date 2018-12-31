@@ -18,7 +18,7 @@ export const normalize = (json, blueprint) => {
 const _normalizeObj = (json, blueprint) => {
   const keys = Object.keys(blueprint);
 
-  return keys.reduce((acc, key, index) => {
+  return keys.reduce((acc, key) => {
     const mapping = isFunction(blueprint[key])
       ? blueprint[key](key, json)
       : nMap(blueprint[key])(key, json);

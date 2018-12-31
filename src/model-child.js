@@ -1,9 +1,11 @@
-import { model } from "./model";
+import { model, all } from "./model";
+import { diveToJSONValue } from "./n-map";
+import { aggregate } from "./aggregate";
 
 /**
- * takes a blueprint and the path to the child being normalized
+ * takes a schema blueprint and the path to the child being normalized
  *
- * returns a normalized data structure based on sugge4stions from the Redux documentation
+ * returns a normalized data structure based on suggestions from the Redux documentation
  * https://redux.js.org/recipes/structuring-reducers/normalizing-state-shape
  *
  * e.g.
@@ -34,18 +36,36 @@ import { model } from "./model";
  * @param {} blueprint
  * @param {*} json
  */
-export const modelChild = (blueprint, json) => key => {
-  const childModel = model(blueprint, json)().reduce(
-    (acc, child, index) => {
-      const id = child["id"] || index;
-
-      acc.find = Object.assign(acc.find, { [id]: child });
-      acc.ids = acc.ids.concat(id);
-
-      return acc;
-    },
-    { find: {}, ids: [] }
-  );
+export const modelChild = (blueprint, json, aggregates) => key => {
+  const defaultAcc = _buildAcc(aggregates);
+  const childModel = model(blueprint, json)(all).reduce((acc, child, index) => {
+    const id = child["id"] || index;
+    console.warn(json[index]);
+    return _setAccValues(acc, id, child);
+  }, defaultAcc);
 
   return { [key]: childModel };
+};
+
+const _setAccValues = (acc, id, child) => {
+  acc.find = Object.assign(acc.find, { [id]: child });
+  acc.ids = acc.ids.concat(id);
+
+  return acc;
+};
+
+const _concatenateAggregateValues = (aggregates, acc, json) => {
+  console.warn(acc);
+  Object.keys(aggregates).map(key => diveToJSONValue(json, aggregates[key]));
+};
+
+const _buildAcc = aggregates => {
+  let defaultAcc = { find: {}, ids: [] };
+
+  aggregates &&
+    Object.keys(aggregates).map(
+      key => (defaultAcc = Object.assign({}, defaultAcc, { [key]: [] }))
+    );
+
+  return defaultAcc;
 };
