@@ -7,34 +7,44 @@ describe("aggregate", () => {
   let blueprint;
   let modelled;
 
-  beforeEach(() => {
-    blueprint = {
-      name: "name",
-      allStats: aggregate("stats")("stat", "name")
-    };
+  // beforeEach(() => {
+  //   blueprint = {
+  //     name: "name",
+  //     allStats: aggregate("stats")("stat", "name")
+  //   };
 
-    modelled = model(blueprint, json)(all);
-  });
+  //   modelled = model(blueprint, json)(all);
+  // });
 
   it("should be a valid function", () => {
     expect(aggregate).toBeDefined();
   });
 
-  it("should return an array of values", () => {
-    expect(modelled.allStats).toHaveLength(json["stats"].length);
-  });
+  // it("should return an array of values", () => {
+  //   expect(modelled.allStats).toHaveLength(json["stats"].length);
+  // });
 
   it("should normalize aggregates correctly", () => {
     let childBlueprint = {
       baseStat: "base_stat",
       effort: "effort"
     };
-    blueprint = {
+    let blueprint = {
       stats: modelChild(childBlueprint, json["stats"], {
         statNames: aggregate("stat", "name")
       })
     };
 
     const modelWithChild = model(blueprint, json)(all);
+
+    expect(modelWithChild.stats.statNames).toHaveLength(
+      modelWithChild.stats.ids.length
+    );
+    expect(modelWithChild.stats.statNames).toContain(
+      json["stats"][0]["stat"]["name"]
+    );
+    expect(modelWithChild.stats.statNames).toContain(
+      json["stats"][1]["stat"]["name"]
+    );
   });
 });

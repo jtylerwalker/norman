@@ -1,7 +1,4 @@
 import { model, all } from "./model";
-import { diveToJSONValue } from "./n-map";
-import { aggregate } from "./aggregate";
-
 /**
  * takes a schema blueprint and the path to the child being normalized
  *
@@ -40,7 +37,13 @@ export const modelChild = (blueprint, json, aggregates) => key => {
   const defaultAcc = _buildAcc(aggregates);
   const childModel = model(blueprint, json)(all).reduce((acc, child, index) => {
     const id = child["id"] || index;
-    console.warn(json[index]);
+
+    aggregates &&
+      Object.keys(aggregates).map(key => {
+        console.warn(aggregates[key](json[index]));
+        acc[key] = acc[key].concat(aggregates[key](json[index]));
+      });
+
     return _setAccValues(acc, id, child);
   }, defaultAcc);
 
@@ -54,10 +57,7 @@ const _setAccValues = (acc, id, child) => {
   return acc;
 };
 
-const _concatenateAggregateValues = (aggregates, acc, json) => {
-  console.warn(acc);
-  Object.keys(aggregates).map(key => diveToJSONValue(json, aggregates[key]));
-};
+const _concatenateAggregateValues = (aggregates, acc, json) => {};
 
 const _buildAcc = aggregates => {
   let defaultAcc = { find: {}, ids: [] };

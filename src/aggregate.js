@@ -9,13 +9,5 @@ import { diveToJSONValue } from "./n-map";
  *
  * @param  {...any} path
  */
-export const aggregate = (...path) => (...aggregatePath) => (key, json) =>
-  path.length === 0
-    ? { [key]: diveToJSONValue(json, ...aggregatePath) }
-    : {
-        [key]: diveToJSONValue(json, ...path).map(val =>
-          diveToJSONValue(val, ...aggregatePath)
-        )
-      };
-
-export const childAggregate = (...path) => (key, json) => {};
+export const aggregate = (...aggregatePath) => json =>
+  diveToJSONValue(json, ...aggregatePath);
