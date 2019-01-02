@@ -25,16 +25,12 @@ describe("aggregate", () => {
     expect(aggregate).toBeDefined();
   });
 
-  it("should return an array of values", () => {
-    expect(modelled.allStats).toHaveLength(json["stats"].length);
-  });
-
   it("should normalize aggregates correctly", () => {
     expect(modelled.stats.statNames).toHaveLength(modelled.stats.ids.length);
     expect(modelled.stats.statNames).toContain(
       json["stats"][0]["stat"]["name"]
     );
-    expect(modelWithChild.stats.statNames).toContain(
+    expect(modelled.stats.statNames).toContain(
       json["stats"][1]["stat"]["name"]
     );
   });

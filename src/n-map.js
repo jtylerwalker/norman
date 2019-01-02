@@ -25,7 +25,5 @@ export const nMap = (...path) => (key, json) => ({
  * @param {*} json
  * @param  {...any} path
  */
-export const diveToJSONValue = (json, ...path) => {
-  console.warn(path, json);
-  return path.reduce((acc, key) => acc[key], json);
-};
+export const diveToJSONValue = (json, ...path) =>
+  path.reduce((acc, key) => acc[key], json);

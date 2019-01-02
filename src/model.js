@@ -118,7 +118,7 @@ export const findLastWhere = (entities, callback) =>
  * @param {*} entities
  * @param {*} param
  */
-export const sortBy = (entities, param) =>
+export const sortBy = entities =>
   entities.sort((a, b) => (a < b && -1) || (a > b && 1) || 0);
 
 /**

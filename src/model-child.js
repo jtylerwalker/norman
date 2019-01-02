@@ -39,10 +39,9 @@ export const modelChild = (blueprint, json, aggregates) => key => {
     const id = child["id"] || index;
 
     aggregates &&
-      Object.keys(aggregates).map(key => {
-        console.warn(aggregates[key](json[index]));
-        acc[key] = acc[key].concat(aggregates[key](json[index]));
-      });
+      Object.keys(aggregates).map(
+        key => (acc[key] = acc[key].concat(aggregates[key](json[index])))
+      );
 
     return _setAccValues(acc, id, child);
   }, defaultAcc);
