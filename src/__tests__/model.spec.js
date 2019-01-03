@@ -29,50 +29,40 @@ describe("model", () => {
     expect(model).not.toBeUndefined();
   });
 
-  it("should have a method 'all' aggregate all entities into an array", () => {
+  it("should have a method 'all' that returns all entities into an array", () => {
     expect(posts(all)).toHaveLength(mock_posts.length);
   });
 
   it("should have a method 'first' that returns first entity", () => {
-    const firstPost = posts(first);
-    expect(firstPost).toMatchObject(mock_posts[0]);
+    expect(posts(first)).toMatchObject(mock_posts[0]);
   });
 
   it("should have a method 'last' that returns last entity", () => {
-    const lastPost = posts(last);
-    expect(lastPost).toMatchObject(mock_posts[mock_posts.length - 1]);
+    expect(posts(last)).toMatchObject(mock_posts[mock_posts.length - 1]);
   });
 
   it("should have a method 'nth' that returns the nth entitiy", () => {
-    const nthPost = posts(nth, 3);
-    expect(nthPost).toMatchObject(mock_posts[3]);
+    expect(posts(nth, 3)).toMatchObject(mock_posts[3]);
   });
 
   it("should have a method 'findBy' that returns all entities that match query", () => {
-    const childrenOfUser1 = posts(findBy, "userId", 1)(all);
-    expect(childrenOfUser1).toHaveLength(10);
+    expect(posts(findBy, "userId", 1)(all)).toHaveLength(10);
   });
 
   it("should have a method 'firstBy' that returns first entity that matches query", () => {
-    const firstPostById = posts(firstBy, "id", 1);
-    const firstPostByUserId = posts(firstBy, "userId", 1);
-    expect(firstPostById).toMatchObject(mock_posts[0]);
-    expect(firstPostByUserId).toMatchObject(mock_posts[0]);
+    expect(posts(firstBy, "id", 1)).toMatchObject(mock_posts[0]);
+    expect(posts(firstBy, "userId", 1)).toMatchObject(mock_posts[0]);
   });
 
   it("should have a method 'lastBy' that returns last entity that matches query", () => {
-    const lastPostById = posts(lastBy, "id", 1);
-    const lastPostByUserId = posts(lastBy, "userId", 1);
-    expect(lastPostById).toMatchObject(mock_posts[0]);
-    expect(lastPostByUserId).toMatchObject(mock_posts[9]);
+    expect(posts(lastBy, "id", 1)).toMatchObject(mock_posts[0]);
+    expect(posts(lastBy, "userId", 1)).toMatchObject(mock_posts[9]);
   });
 
   it("should have a method 'findWhere' that takes a callback to sort entities", () => {
-    const userIdLargerThan1 = entities =>
-      entities.filter(entity => Number(entity.userId) > 1);
-    const entities = posts(findWhere, userIdLargerThan1);
-    entities(all).map(entity =>
-      expect(Number(entity.userId)).toBeGreaterThan(1)
+    const userIdIsLargerThan1 = entities => entities.filter(e => e.userId > 1);
+    posts(findWhere, userIdIsLargerThan1)(all).map(e =>
+      expect(e.userId).toBeGreaterThan(1)
     );
   });
 });
