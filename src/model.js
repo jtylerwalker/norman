@@ -40,6 +40,15 @@ export const last = entities => entities[entities.length - 1];
 
 /**
  *
+ * returns the nth entry of array
+ * nth is the array index number, to make things cohesive
+ *
+ * @param {} entities
+ * @param {*} nth
+ */
+export const nth = (entities, nth) => entities[nth];
+/**
+ *
  * curried function that returns filtered array
  *
  * @param {*} entities
@@ -130,6 +139,6 @@ export const sortBy = entities =>
  * @param {*} val
  */
 export const removeBy = (entities, param, val) =>
-  entities.filter(entry => entry[param] !== val);
+  entities.filter(entity => entity[param] !== val);
 
 // strip give a smaller more manageable object
