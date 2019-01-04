@@ -1,4 +1,5 @@
 import * as N from "./src/model";
+import { all, sortBy } from "./src/model";
 import axios from "axios";
 
 const getWorldData = async () => {
@@ -8,14 +9,14 @@ const getWorldData = async () => {
     );
     const countries = await json;
 
-    console.log(modelCountries(countries)(N.all));
+    console.log(Country(countries)(sortBy, "capital", "desc")(all));
   } catch (e) {
     console.error(e);
   }
 };
 
-const modelCountries = countries => {
-  const countriesModel = N.model(
+const Country = countries => {
+  const model = N.model(
     {
       id: "id",
       name: "name",
@@ -28,7 +29,7 @@ const modelCountries = countries => {
     countries.data[1]
   );
 
-  return countriesModel;
+  return model;
 };
 
 getWorldData();

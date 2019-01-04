@@ -51,7 +51,7 @@ export const model = (blueprint, json, aggregates) => (func, ...params) =>
  */
 export const modelChild = (blueprint, json, aggregates) => key => {
   const childModel = model(blueprint, json, aggregates)(all);
-  return { [key]: childModel };
+  return { [key]: Object.assign({}, childModel) };
 };
 
 /**
@@ -122,13 +122,22 @@ export const findBy = (entities, query) => func => {
  * @param {*} entities
  * @param {*} param
  */
-export const sortBy = (entities, param) => func => {
-  entities.ids = entities.ids.sort(
-    (a, b) =>
-      (entities.find[a][param] < entities.find[b][param] && -1) ||
-      (entities.find[a][param] > entities.find[b][param] && 1) ||
-      0
-  );
+export const sortBy = (entities, param, direction) => func => {
+  const asc = () =>
+    entities.ids.sort(
+      (a, b) =>
+        (entities.find[a][param] < entities.find[b][param] && -1) ||
+        (entities.find[a][param] > entities.find[b][param] && 1) ||
+        0
+    );
+  const desc = () =>
+    entities.ids.sort(
+      (a, b) =>
+        (entities.find[a][param] > entities.find[b][param] && -1) ||
+        (entities.find[a][param] < entities.find[b][param] && 1) ||
+        0
+    );
+  entities.ids = direction === "desc" ? desc() : asc();
   return func(entities);
 };
 
