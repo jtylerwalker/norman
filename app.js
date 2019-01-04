@@ -1,18 +1,34 @@
-import * as N from "./src/normalize";
-import { allPokemon } from "./src/__mockData__/pokemon";
-import { ditto as json } from "./src/__mockData__/themarbles";
+import * as N from "./src/model";
+import axios from "axios";
 
-const GameIndices = N.model({}, json["game_indices"]);
+const getWorldData = async () => {
+  try {
+    const json = axios.get(
+      "http://api.worldbank.org/v2/countries/?format=json"
+    );
+    const countries = await json;
 
-const Ditto = N.model(
-  {
-    id: "id",
-    experience: "base_experience",
-    height: "height"
-  },
-  json
-);
+    console.log(modelCountries(countries)(N.all));
+  } catch (e) {
+    console.error(e);
+  }
+};
 
-const ditto = Ditto(N.all);
+const modelCountries = countries => {
+  const countriesModel = N.model(
+    {
+      id: "id",
+      name: "name",
+      capital: "capitalCity",
+      region: ["adminregion", "value"],
+      incomeLevel: ["incomeLevel", "value"],
+      lat: "latitude",
+      lon: "longitude"
+    },
+    countries.data[1]
+  );
 
-console.warn(ditto);
+  return countriesModel;
+};
+
+getWorldData();

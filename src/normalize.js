@@ -11,7 +11,7 @@ import { nMap } from "./n-map";
  */
 export const normalize = (json, blueprint, aggregates) => {
   return Array.isArray(json)
-    ? _normalizeArr(json, aggregates)
+    ? _normalizeArr(json, blueprint, aggregates)
     : _normalizeObj(json, blueprint);
 };
 
@@ -27,10 +27,11 @@ const _normalizeObj = (json, blueprint) => {
   }, {});
 };
 
-const _normalizeArr = (json, aggregates) => {
+const _normalizeArr = (json, blueprint, aggregates) => {
   const defaultacc = _buildAcc(aggregates);
   return json.reduce((acc, entity, index) => {
     const id = entity["id"] || index;
+    const mappedEntity = _normalizeObj(entity, blueprint);
 
     aggregates &&
       Object.keys(aggregates).map(key => {
@@ -40,7 +41,7 @@ const _normalizeArr = (json, aggregates) => {
         }
       });
 
-    return _setAccValues(acc, id, entity);
+    return _setAccValues(acc, id, mappedEntity);
   }, defaultacc);
 };
 

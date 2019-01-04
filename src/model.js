@@ -112,7 +112,6 @@ export const findBy = (entities, query) => func => {
 
     return acc;
   }, []);
-
   return func(entities);
 };
 

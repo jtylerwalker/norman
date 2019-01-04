@@ -14,8 +14,8 @@
  *
  * @param  {...any} path
  */
-export const nMap = (...path) => (key, json) => ({
-  [key]: diveToJSONValue(json, ...path)
+export const nMap = path => (key, json) => ({
+  [key]: diveToJSONValue(json, path)
 });
 
 /**
@@ -25,5 +25,7 @@ export const nMap = (...path) => (key, json) => ({
  * @param {*} json
  * @param  {...any} path
  */
-export const diveToJSONValue = (json, ...path) =>
-  path.reduce((acc, key) => acc[key], json);
+export const diveToJSONValue = (json, path) => {
+  const pathArr = Array.isArray(path) ? path : [path];
+  return pathArr.reduce((acc, key) => acc[key], json);
+};
