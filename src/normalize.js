@@ -9,9 +9,9 @@ import { nMap } from "./n-map";
  * @param {*} json
  * @param {*} blueprint
  */
-export const normalize = (json, blueprint) => {
+export const normalize = (json, blueprint, aggregates) => {
   return Array.isArray(json)
-    ? _normalizeArr(json, blueprint)
+    ? _normalizeArr(json, aggregates)
     : _normalizeObj(json, blueprint);
 };
 
@@ -27,11 +27,37 @@ const _normalizeObj = (json, blueprint) => {
   }, {});
 };
 
-const _normalizeArr = (json, blueprint) => {
-  return json.reduce((acc, val, index) => {
-    const obj = _normalizeObj(val, blueprint);
-    const withId = Object.assign({}, { id: val["id"] || index }, obj);
+const _normalizeArr = (json, aggregates) => {
+  const defaultacc = _buildAcc(aggregates);
+  return json.reduce((acc, entity, index) => {
+    const id = entity["id"] || index;
 
-    return acc.concat(withId);
-  }, []);
+    aggregates &&
+      Object.keys(aggregates).map(key => {
+        const jsonvalue = aggregates[key](json[index]);
+        if (acc[key].indexof(jsonvalue) === -1) {
+          acc[key] = acc[key].concat(jsonvalue);
+        }
+      });
+
+    return _setAccValues(acc, id, entity);
+  }, defaultacc);
+};
+
+const _setAccValues = (acc, id, entity) => {
+  acc.find = Object.assign(acc.find, { [id]: entity });
+  acc.ids = acc.ids.concat(id);
+
+  return acc;
+};
+
+const _buildAcc = aggregates => {
+  let defaultAcc = { find: {}, ids: [] };
+
+  aggregates &&
+    Object.keys(aggregates).map(
+      key => (defaultAcc = Object.assign({}, defaultAcc, { [key]: [] }))
+    );
+
+  return defaultAcc;
 };

@@ -9,10 +9,10 @@ import { normalize } from "./normalize";
  * @param {*} blueprint
  * @param {*} json
  */
-export const model = (blueprint, json) => (func, ...params) =>
+export const model = (blueprint, json, aggregates) => (func, ...params) =>
   func
-    ? func(normalize(json, blueprint), ...params)
-    : all(normalize(json, blueprint));
+    ? func(normalize(json, blueprint, aggregates), ...params)
+    : all(normalize(json, blueprint, aggregates));
 
 /**
  *
@@ -21,14 +21,13 @@ export const model = (blueprint, json) => (func, ...params) =>
  * @param {*} entities
  */
 export const all = entities => entities;
-
 /**
  *
  * Returns first entry of array
  *
  * @param {*} entities
  */
-export const first = entities => entities[0];
+export const first = entities => entities.find[entities.ids[0]];
 
 /**
  *
@@ -36,7 +35,8 @@ export const first = entities => entities[0];
  *
  * @param {*} entities
  */
-export const last = entities => entities[entities.length - 1];
+export const last = entities =>
+  entities.find[entities.ids[entities.ids.length - 1]];
 
 /**
  *
@@ -46,7 +46,8 @@ export const last = entities => entities[entities.length - 1];
  * @param {} entities
  * @param {*} nth
  */
-export const nth = (entities, nth) => entities[nth];
+export const nth = (entities, nth) => entities.find[entities.ids[nth]];
+
 /**
  *
  * curried function that returns filtered array
@@ -55,70 +56,25 @@ export const nth = (entities, nth) => entities[nth];
  * @param {*} param
  * @param {*} val
  */
-export const findBy = (entities, param, val) => func =>
-  func(entities.filter(entry => entry[param] === val));
+export const findBy = (entities, query) => func => {
+  let sortedEntities = sortBy(entities, "userId")(all);
 
-/**
- *
- * returns first of filtered "findBy" array
- *
- * @param {*} entities
- * @param {*} param
- * @param {*} val
- */
-export const firstBy = (entities, param, val) =>
-  findBy(entities, param, val)(first);
+  entities.ids = sortedEntities.ids.reduce((acc, id) => {
+    Object.entries(entities.find[id]).forEach(([eKey, eValue]) => {
+      let matches = true;
+      Object.entries(query).forEach(([key, value]) => {
+        matches = key === eKey && value === eValue;
+      });
+      if (matches) {
+        acc = acc.concat(id);
+      }
+    });
 
-/**
- *
- * returns last of filtered "findBy" array
- *
- * @param {} entities
- * @param {*} param
- * @param {*} val
- */
-export const lastBy = (entities, param, val) =>
-  findBy(entities, param, val)(last);
+    return acc;
+  }, []);
 
-/**
- *
- * curried function that uses callback to filter entities
- *
- * @param {*} entities
- * @param {*} callback
- */
-export const findWhere = (entities, callback) => func =>
-  func(callback(entities));
-
-/**
- *
- * returns all entities from "findWhere" function
- *
- * @param {*} entities
- * @param {*} callback
- */
-export const findAllWhere = (entities, callback) =>
-  findWhere(entities, callback)(all);
-
-/**
- *
- * returns first entry from "findWhere" function
- *
- * @param {*} entities
- * @param {*} callback
- */
-export const findFirstWhere = (entities, callback) =>
-  findWhere(entities, callback)(first);
-
-/**
- *
- * returns last entry from "findWhere" function
- *
- * @param {*} entities
- * @param {*} callback
- */
-export const findLastWhere = (entities, callback) =>
-  findWhere(entities, callback)(last);
+  return func(entities);
+};
 
 /**
  *
@@ -127,8 +83,15 @@ export const findLastWhere = (entities, callback) =>
  * @param {*} entities
  * @param {*} param
  */
-export const sortBy = entities =>
-  entities.sort((a, b) => (a < b && -1) || (a > b && 1) || 0);
+export const sortBy = (entities, param) => func => {
+  entities.ids = entities.ids.sort(
+    (a, b) =>
+      (entities.find[a][param] < entities.find[b][param] && -1) ||
+      (entities.find[a][param] > entities.find[b][param] && 1) ||
+      0
+  );
+  return func(entities);
+};
 
 /**
  *
@@ -138,7 +101,10 @@ export const sortBy = entities =>
  * @param {*} param
  * @param {*} val
  */
-export const removeBy = (entities, param, val) =>
-  entities.filter(entity => entity[param] !== val);
+export const remove = (entities, removalId) => func => {
+  entities.ids = entities.ids.filter(id => removalId !== id);
+
+  return func(entities);
+};
 
 // strip give a smaller more manageable object

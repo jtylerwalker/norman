@@ -1,4 +1,5 @@
 import { model, all } from "./model";
+import { formatArrModel } from "./normalize";
 /**
  * takes a schema blueprint and the path to the child being normalized
  *
@@ -34,35 +35,6 @@ import { model, all } from "./model";
  * @param {*} json
  */
 export const modelChild = (blueprint, json, aggregates) => key => {
-  const defaultAcc = _buildAcc(aggregates);
-  const childModel = model(blueprint, json)(all).reduce((acc, child, index) => {
-    const id = child["id"] || index;
-
-    aggregates &&
-      Object.keys(aggregates).map(
-        key => (acc[key] = acc[key].concat(aggregates[key](json[index])))
-      );
-
-    return _setAccValues(acc, id, child);
-  }, defaultAcc);
-
+  const childModel = model(blueprint, json, aggregates)(all);
   return { [key]: childModel };
-};
-
-const _setAccValues = (acc, id, child) => {
-  acc.find = Object.assign(acc.find, { [id]: child });
-  acc.ids = acc.ids.concat(id);
-
-  return acc;
-};
-
-const _buildAcc = aggregates => {
-  let defaultAcc = { find: {}, ids: [] };
-
-  aggregates &&
-    Object.keys(aggregates).map(
-      key => (defaultAcc = Object.assign({}, defaultAcc, { [key]: [] }))
-    );
-
-  return defaultAcc;
 };
