@@ -1,4 +1,13 @@
-import { model, all, first, last, nth, findBy, sortBy, remove } from "../model";
+import {
+  model,
+  all,
+  first,
+  last,
+  nth,
+  findBy,
+  sortBy,
+  removeBy
+} from "../model";
 import { posts as mock_posts } from "../__mockData__/posts";
 import { aggregate } from "../aggregate";
 
@@ -63,9 +72,9 @@ describe("model", () => {
     });
   });
 
-  describe("remove method", () => {
-    it("should have a method 'remove' that removes an item based on param", () => {
-      const postsRemoved = posts(remove, 1)(all);
+  describe("removeBy method", () => {
+    it("should have a method 'removeBy' that removes an item based on param", () => {
+      const postsRemoved = posts(removeBy, 1)(all);
       expect(postsRemoved.ids).not.toContain(1);
     });
   });

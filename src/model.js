@@ -51,6 +51,7 @@ export const model = (blueprint, json, aggregates) => (func, ...params) =>
  */
 export const modelChild = (blueprint, json, aggregates) => key => {
   const childModel = model(blueprint, json, aggregates)(all);
+  console.log(blueprint, json, aggregates);
   return { [key]: Object.assign({}, childModel) };
 };
 
@@ -90,6 +91,26 @@ export const nth = (entities, nth) => entities.find[entities.ids[nth]];
 
 /**
  *
+ *
+ * @param {} entities
+ * @param {*} nth
+ */
+export const limit = (entities, limit) =>
+  entities.ids.slice(0, limit).map(id => entities.find[id]);
+
+/**
+ *
+ *
+ * @param {} entities
+ * @param {*} nth
+ */
+export const reverseLimit = (entities, limit) =>
+  entities.ids
+    .slice(Math.max(entities.ids.length - limit, 0))
+    .map(id => entities.find[id]);
+
+/**
+ *
  * curried function that returns filtered array
  *
  * @param {*} entities
@@ -98,7 +119,6 @@ export const nth = (entities, nth) => entities.find[entities.ids[nth]];
  */
 export const findBy = (entities, query) => func => {
   let sortedEntities = sortBy(entities, "userId")(all);
-
   entities.ids = sortedEntities.ids.reduce((acc, id) => {
     Object.entries(entities.find[id]).forEach(([eKey, eValue]) => {
       let matches = true;
@@ -149,7 +169,7 @@ export const sortBy = (entities, param, direction) => func => {
  * @param {*} param
  * @param {*} val
  */
-export const remove = (entities, removalId) => func => {
+export const removeBy = (entities, removalId) => func => {
   entities.ids = entities.ids.filter(id => removalId !== id);
 
   return func(entities);

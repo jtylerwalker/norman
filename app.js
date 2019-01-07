@@ -1,5 +1,5 @@
 import * as N from "./src/model";
-import { all, sortBy } from "./src/model";
+import { all, sortBy, limit, reverseLimit } from "./src/model";
 import axios from "axios";
 
 const getWorldData = async () => {
@@ -9,7 +9,7 @@ const getWorldData = async () => {
     );
     const countries = await json;
 
-    console.log(Country(countries)(sortBy, "capital", "desc")(all));
+    console.log(Country(countries)(reverseLimit, 10));
   } catch (e) {
     console.error(e);
   }
