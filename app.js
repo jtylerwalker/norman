@@ -1,19 +1,6 @@
 import * as N from "./src/model";
-import { all, sortBy, limit, reverseLimit } from "./src/model";
+import { all } from "./src/model";
 import axios from "axios";
-
-const getWorldData = async () => {
-  try {
-    const json = axios.get(
-      "http://api.worldbank.org/v2/countries/?format=json"
-    );
-    const countries = await json;
-
-    console.log(Country(countries)(reverseLimit, 10));
-  } catch (e) {
-    console.error(e);
-  }
-};
 
 const Country = countries => {
   const model = N.model(
@@ -30,6 +17,19 @@ const Country = countries => {
   );
 
   return model;
+};
+
+const getWorldData = async () => {
+  try {
+    const json = axios.get(
+      "http://api.worldbank.org/v2/countries/?format=json"
+    );
+    const countries = await json;
+
+    console.log(Country(countries)(all));
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 getWorldData();

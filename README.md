@@ -1,5 +1,8 @@
 # norman
 
+## Installation
+run `npm install norman-model`
+
 ## Normalization
 Modeling an object requires two things: a blueprint and a JSON object. E.g.
 

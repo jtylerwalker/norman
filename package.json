@@ -1,5 +1,5 @@
 {
-  "name": "norman",
+  "name": "norman-model",
   "version": "0.0.1",
   "description": "Library that normalizes json for consumption",
   "main": "index.js",
